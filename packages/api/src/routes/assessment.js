@@ -6,10 +6,11 @@ const { Router } = require(`express`);
 const assessmentRouter = Router();
 
 assessmentRouter.post(
-  `/`,
+  `/submit`,
   async (req, res, next) => {
     try {
-      const { assessment } = req.body;
+
+      const assessment = await AssessmentService.submit(req.body);
 
       // verify that your data is making it here to the API by using console.log(assessment);
       // call the AssessmentService.submit function from packages/api/src/microservices/Assessment-Service.js and
@@ -18,7 +19,7 @@ assessmentRouter.post(
       ResponseHandler(
         res,
         `Submitted assessment`,
-        {},
+        { assessment },
       );
     } catch (err) {
       next(err);
@@ -27,12 +28,12 @@ assessmentRouter.post(
 );
 
 assessmentRouter.get(
-  `/`,
+  `/list`,
   async (req, res, next) => {
     try {
       // verify that your data is making it here to the API by using console.log();
       // call the AssessmentService.getList function from packages/api/src/microservices/Assessment-Service.js
-      const assessments = [];
+      const assessments = await AssessmentService.getList();
 
       ResponseHandler(
         res,
@@ -42,7 +43,24 @@ assessmentRouter.get(
     } catch (err) {
       next(err);
     }
+
   },
+  assessmentRouter.patch(
+    `/:id/delete`,
+    async (req, res, next) => {
+      try {
+        const { id } = req.params;
+        const result = await AssessmentService.softDelete(id);
+        if (result === 0) {
+          return res.status(404).json({ message: `Assessment not found` });
+        }
+        ResponseHandler(res, `Assessment soft deleted`);
+      }
+      catch (err) {
+        next(err);
+      }
+    },
+  ),
 );
 
 module.exports = { assessmentRouter };

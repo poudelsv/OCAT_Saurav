@@ -65,7 +65,12 @@ InferCreationAttributes<Assessment>
       },
       /* eslint-enable sort-keys */
     }, {
+
+      modelName: `Assessment`,
+      paranoid: true,
       sequelize,
+      timestamps: true,
+
     });
 
     return Assessment;
