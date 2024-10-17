@@ -8,5 +8,10 @@
   },
   "devDependencies": {
     "npm-check-updates": "^16.5.1"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "react-hook-form": "^7.53.0",
+    "sequelize": "^6.37.3"
   }
 }
